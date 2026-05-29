@@ -10,12 +10,10 @@ namespace TmodHuupa.Content.Items.Weapons;
 
 public class HoopaSummonStaff : ModItem
 {
-	public override string Texture => "Terraria/Images/Item_495";
-
 	public override void SetDefaults()
 	{
-		Item.width = 32;
-		Item.height = 32;
+		Item.width = 40;
+		Item.height = 40;
 		Item.damage = 1;
 		Item.DamageType = DamageClass.Summon;
 		Item.mana = 10;
