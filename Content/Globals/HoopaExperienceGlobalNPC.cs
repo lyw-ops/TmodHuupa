@@ -1,13 +1,31 @@
 using System;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using TmodHuupa.Content.Players;
+using TmodHuupa.Content.Projectiles;
 
 namespace TmodHuupa.Content.Globals;
 
 public class HoopaExperienceGlobalNPC : GlobalNPC
 {
+	private int hoopaExperienceOwner = -1;
+
+	public override bool InstancePerEntity => true;
+
+	public override void OnSpawn(NPC npc, IEntitySource source)
+	{
+		hoopaExperienceOwner = -1;
+	}
+
+	public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone)
+	{
+		if (projectile.type == ModContent.ProjectileType<HoopaRingBoltProjectile>() && IsValidPlayer(projectile.owner)) {
+			hoopaExperienceOwner = projectile.owner;
+		}
+	}
+
 	public override void OnKill(NPC npc)
 	{
 		if (!CanGrantExperience(npc)) {
@@ -38,14 +56,19 @@ public class HoopaExperienceGlobalNPC : GlobalNPC
 			&& !npc.SpawnedFromStatue;
 	}
 
-	private static Player GetExperiencePlayer(NPC npc)
+	private Player GetExperiencePlayer(NPC npc)
 	{
-		int playerIndex = npc.lastInteraction;
-		if (playerIndex < 0 || playerIndex >= Main.maxPlayers || !Main.player[playerIndex].active) {
+		int playerIndex = IsValidPlayer(hoopaExperienceOwner) ? hoopaExperienceOwner : npc.lastInteraction;
+		if (!IsValidPlayer(playerIndex)) {
 			playerIndex = Player.FindClosest(npc.position, npc.width, npc.height);
 		}
 
 		return Main.player[playerIndex];
+	}
+
+	private static bool IsValidPlayer(int playerIndex)
+	{
+		return playerIndex >= 0 && playerIndex < Main.maxPlayers && Main.player[playerIndex].active;
 	}
 
 	private static int CalculateRingSyncExperience(NPC npc, HoopaPlayer hoopaPlayer)

@@ -21,6 +21,8 @@ Mods: {
 		HoopaExperience: {
 			Tooltip: 圆环同步 Lv.{0}/{1}  经验 {2}/{3}
 			TooltipAtCap: 圆环同步 Lv.{0}/{1}  需要圆环核心突破
+			Summon: 胡帕出现了。圆环同步 Lv.{0}/{1}，经验 {2}/{3}
+			SummonAtCap: 胡帕出现了。圆环同步 Lv.{0}/{1}，需要圆环核心突破
 			ExperienceCombatText: +{0} 同步
 			LevelUp: 胡帕的圆环同步提升到 Lv.{0}！
 			LevelCapReached: 胡帕的圆环同步达到 Lv.{0}，需要圆环核心突破。

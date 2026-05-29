@@ -49,6 +49,7 @@ public class HoopaSummonStaff : ModItem
 		}
 
 		Projectile.NewProjectile(source, Main.MouseWorld, Vector2.Zero, type, damage, knockback, player.whoAmI);
+		ShowSummonMessage(player);
 		return false;
 	}
 
@@ -65,6 +66,21 @@ public class HoopaSummonStaff : ModItem
 				hoopaPlayer.ExperienceToNextRingSyncLevel);
 
 		tooltips.Add(new TooltipLine(Mod, "HoopaRingSync", progressText));
+	}
+
+	private static void ShowSummonMessage(Player player)
+	{
+		HoopaPlayer hoopaPlayer = player.GetModPlayer<HoopaPlayer>();
+		string message = hoopaPlayer.IsAtRingSyncCap
+			? Language.GetTextValue("Mods.TmodHuupa.HoopaExperience.SummonAtCap", hoopaPlayer.RingSyncLevel, hoopaPlayer.RingSyncLevelCap)
+			: Language.GetTextValue(
+				"Mods.TmodHuupa.HoopaExperience.Summon",
+				hoopaPlayer.RingSyncLevel,
+				hoopaPlayer.RingSyncLevelCap,
+				hoopaPlayer.RingSyncExperience,
+				hoopaPlayer.ExperienceToNextRingSyncLevel);
+
+		Main.NewText(message, 255, 215, 80);
 	}
 
 	public override void AddRecipes()

@@ -21,6 +21,8 @@ Mods: {
 		HoopaExperience: {
 			Tooltip: Ring Sync Lv.{0}/{1}  EXP {2}/{3}
 			TooltipAtCap: Ring Sync Lv.{0}/{1}  Ring Core breakthrough required
+			Summon: Hoopa appeared. Ring Sync Lv.{0}/{1}, EXP {2}/{3}
+			SummonAtCap: Hoopa appeared. Ring Sync Lv.{0}/{1}, Ring Core breakthrough required
 			ExperienceCombatText: +{0} Sync
 			LevelUp: Hoopa's Ring Sync rose to Lv.{0}!
 			LevelCapReached: Hoopa's Ring Sync reached Lv.{0}. A Ring Core breakthrough is required.
