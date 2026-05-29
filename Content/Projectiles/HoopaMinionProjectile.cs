@@ -23,8 +23,8 @@ public class HoopaMinionProjectile : ModProjectile
 
 	public override void SetDefaults()
 	{
-		Projectile.width = 42;
-		Projectile.height = 42;
+		Projectile.width = 40;
+		Projectile.height = 40;
 		Projectile.netImportant = true;
 		Projectile.friendly = true;
 		Projectile.minion = true;
@@ -34,7 +34,7 @@ public class HoopaMinionProjectile : ModProjectile
 		Projectile.tileCollide = false;
 		Projectile.ignoreWater = true;
 		Projectile.DamageType = DamageClass.Summon;
-		Projectile.scale = 0.68f;
+		Projectile.scale = 0.62f;
 	}
 
 	public override bool? CanDamage()
