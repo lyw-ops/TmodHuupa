@@ -1,0 +1,25 @@
+Mods: {
+	TmodHuupa: {
+		Items: {
+			HoopaSummonStaff: {
+				DisplayName: 胡帕召唤杖
+				Tooltip:
+					'''
+					召唤胡帕跟随你
+					胡帕的战斗技能还没有实装
+					'''
+			}
+		}
+
+		Buffs: {
+			HoopaMinionBuff: {
+				DisplayName: 胡帕
+				Description: 胡帕正在观察你周围的空间
+			}
+		}
+
+		Projectiles: {
+			HoopaMinionProjectile.DisplayName: 胡帕
+		}
+	}
+}

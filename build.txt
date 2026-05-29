@@ -1,0 +1,7 @@
+author = lyuyuwei
+displayName = Hoopa Across Terraria
+version = 0.1.0
+includeSource = true
+hideCode = false
+hideResources = false
+buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*, .git\*

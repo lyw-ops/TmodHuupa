@@ -1,0 +1,25 @@
+Mods: {
+	TmodHuupa: {
+		Items: {
+			HoopaSummonStaff: {
+				DisplayName: Hoopa Summon Staff
+				Tooltip:
+					'''
+					Summons Hoopa to follow you
+					Hoopa's battle skills are not implemented yet
+					'''
+			}
+		}
+
+		Buffs: {
+			HoopaMinionBuff: {
+				DisplayName: Hoopa
+				Description: Hoopa is watching the space around you
+			}
+		}
+
+		Projectiles: {
+			HoopaMinionProjectile.DisplayName: Hoopa
+		}
+	}
+}

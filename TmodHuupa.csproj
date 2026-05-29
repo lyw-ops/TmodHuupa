@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<AssemblyName>TmodHuupa</AssemblyName>
+		<RootNamespace>TmodHuupa</RootNamespace>
+	</PropertyGroup>
+
+	<Import Project="../tMLMod.targets" Condition="Exists('../tMLMod.targets')" />
+	<Import Project="/Users/lyuyuwei/Library/Application Support/Steam/steamapps/common/tModLoader/tMLMod.targets" Condition="!Exists('../tMLMod.targets') and Exists('/Users/lyuyuwei/Library/Application Support/Steam/steamapps/common/tModLoader/tMLMod.targets')" />
+</Project>
