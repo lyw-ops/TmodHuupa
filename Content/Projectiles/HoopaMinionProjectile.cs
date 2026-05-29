@@ -11,10 +11,11 @@ public class HoopaMinionProjectile : ModProjectile
 {
 	private const float IdleDistanceFromPlayer = 68f;
 	private const float IdleHeight = 62f;
+	private const int AnimationFrameTicks = 8;
 
 	public override void SetStaticDefaults()
 	{
-		Main.projFrames[Projectile.type] = 1;
+		Main.projFrames[Projectile.type] = 4;
 		Main.projPet[Projectile.type] = true;
 		ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
 		ProjectileID.Sets.MinionSacrificable[Projectile.type] = true;
@@ -74,7 +75,22 @@ public class HoopaMinionProjectile : ModProjectile
 		}
 
 		Projectile.spriteDirection = Projectile.Center.X < owner.Center.X ? 1 : -1;
+		Animate();
 		Projectile.rotation = MathHelper.Lerp(Projectile.rotation, Projectile.velocity.X * 0.015f, 0.08f);
 		Lighting.AddLight(Projectile.Center, 0.45f, 0.25f, 0.75f);
+	}
+
+	private void Animate()
+	{
+		Projectile.frameCounter++;
+		if (Projectile.frameCounter < AnimationFrameTicks) {
+			return;
+		}
+
+		Projectile.frameCounter = 0;
+		Projectile.frame++;
+		if (Projectile.frame >= Main.projFrames[Projectile.type]) {
+			Projectile.frame = 0;
+		}
 	}
 }
