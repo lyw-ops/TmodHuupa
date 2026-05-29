@@ -44,6 +44,7 @@ public class HoopaExperienceGlobalNPC : GlobalNPC
 
 		int experience = CalculateRingSyncExperience(npc, hoopaPlayer);
 		hoopaPlayer.TryGrantRingSyncExperience(npc, experience);
+		TryGrantBossWitnessReward(npc, hoopaPlayer);
 	}
 
 	private static bool CanGrantExperience(NPC npc)
@@ -80,6 +81,83 @@ public class HoopaExperienceGlobalNPC : GlobalNPC
 		}
 
 		return Math.Max(1, (int)MathF.Round(baseExperience * stageMultiplier));
+	}
+
+	private static void TryGrantBossWitnessReward(NPC npc, HoopaPlayer hoopaPlayer)
+	{
+		if (!TryGetBossWitnessReward(npc, out string bossKey, out int experience, out int bondLevelTarget)) {
+			return;
+		}
+
+		hoopaPlayer.TryClaimBossWitnessReward(npc, bossKey, npc.FullName, experience, bondLevelTarget);
+	}
+
+	private static bool TryGetBossWitnessReward(NPC npc, out string bossKey, out int experience, out int bondLevelTarget)
+	{
+		bossKey = string.Empty;
+		experience = 0;
+		bondLevelTarget = HoopaPlayer.InitialBondLevel;
+
+		switch (npc.type) {
+			case NPCID.KingSlime:
+				bossKey = "kingSlime";
+				experience = 120;
+				return true;
+			case NPCID.EyeofCthulhu:
+				bossKey = "eyeOfCthulhu";
+				experience = 180;
+				bondLevelTarget = 2;
+				return true;
+			case NPCID.EaterofWorldsHead:
+			case NPCID.BrainofCthulhu:
+				bossKey = "evilBoss";
+				experience = 260;
+				bondLevelTarget = 2;
+				return true;
+			case NPCID.QueenBee:
+				bossKey = "queenBee";
+				experience = 280;
+				return true;
+			case NPCID.SkeletronHead:
+				bossKey = "skeletron";
+				experience = 320;
+				return true;
+			case NPCID.WallofFlesh:
+			case NPCID.WallofFleshEye:
+				bossKey = "wallOfFlesh";
+				experience = 650;
+				bondLevelTarget = 3;
+				return true;
+			case NPCID.TheDestroyer:
+				bossKey = "destroyer";
+				experience = 800;
+				return true;
+			case NPCID.Retinazer:
+			case NPCID.Spazmatism:
+				bossKey = "twins";
+				experience = 800;
+				return true;
+			case NPCID.SkeletronPrime:
+				bossKey = "skeletronPrime";
+				experience = 800;
+				return true;
+			case NPCID.Plantera:
+				bossKey = "plantera";
+				experience = 1200;
+				bondLevelTarget = 4;
+				return true;
+			case NPCID.Golem:
+				bossKey = "golem";
+				experience = 1400;
+				return true;
+			case NPCID.MoonLordCore:
+				bossKey = "moonLord";
+				experience = 2500;
+				bondLevelTarget = 5;
+				return true;
+			default:
+				return false;
+		}
 	}
 
 	private static int GetBaseExperience(NPC npc)

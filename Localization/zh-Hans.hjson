@@ -7,6 +7,98 @@ Mods: {
 					'''
 					召唤胡帕跟随你
 					胡帕会发射小圆环能量弹攻击附近敌人
+					圆环同步 Lv.10 后，胡帕会牵引附近掉落物
+					'''
+			}
+
+			RoughRingCore: {
+				DisplayName: 粗糙圆环核心
+				Tooltip:
+					'''
+					用于稳定胡帕破碎圆环的基础核心
+					胡帕圆环同步 Lv.10 时可将上限提升到 Lv.20
+					'''
+			}
+
+			GleamingRingCore: {
+				DisplayName: 辉光圆环核心
+				Tooltip:
+					'''
+					用贵金属与宝石稳定圆环结构
+					胡帕圆环同步 Lv.20 时可将上限提升到 Lv.30
+					'''
+			}
+
+			AlteredRingCore: {
+				DisplayName: 异化圆环核心
+				Tooltip:
+					'''
+					封入邪恶之地能量的圆环核心
+					胡帕圆环同步 Lv.30 时可将上限提升到 Lv.40
+					'''
+			}
+
+			MoltenRingCore: {
+				DisplayName: 熔火圆环核心
+				Tooltip:
+					'''
+					让圆环适应地狱高温的核心
+					胡帕圆环同步 Lv.40 时可将上限提升到 Lv.50
+					'''
+			}
+
+			HardenedRingCore: {
+				DisplayName: 硬化圆环核心
+				Tooltip:
+					'''
+					以困难模式矿石锚定世界法则
+					胡帕圆环同步 Lv.50 时可将上限提升到 Lv.60
+					'''
+			}
+
+			ArcaneRingCore: {
+				DisplayName: 魔导圆环核心
+				Tooltip:
+					'''
+					融合机械三王灵魂的圆环核心
+					胡帕圆环同步 Lv.60 时可将上限提升到 Lv.70
+					'''
+			}
+
+			TitanRingCore: {
+				DisplayName: 泰坦圆环核心
+				Tooltip:
+					'''
+					以神圣金属强化圆环承载力
+					胡帕圆环同步 Lv.70 时可将上限提升到 Lv.80
+					'''
+			}
+
+			VerdantRingCore: {
+				DisplayName: 森灵圆环核心
+				Tooltip:
+					'''
+					让圆环与生命和神庙能量同步
+					胡帕圆环同步 Lv.80 时可将上限提升到 Lv.90
+					'''
+			}
+
+			AstralRingCore: {
+				DisplayName: 星界圆环核心
+				Tooltip:
+					'''
+					接触宇宙力量后才能稳定的最终核心
+					胡帕圆环同步 Lv.90 时可将上限提升到 Lv.100
+					'''
+			}
+
+			HoopaDebugCompass: {
+				DisplayName: 胡帕调试罗盘
+				Tooltip:
+					'''
+					开发测试用道具
+					左键：给予胡帕 500 圆环同步经验
+					右键：显示胡帕当前成长状态
 					'''
 			}
 		}
@@ -21,12 +113,29 @@ Mods: {
 		HoopaExperience: {
 			Tooltip: 圆环同步 Lv.{0}/{1}  经验 {2}/{3}
 			TooltipAtCap: 圆环同步 Lv.{0}/{1}  需要圆环核心突破
+			TooltipBond: 羁绊等级 {0}/{1}
+			TooltipSpatialDodgeLocked: 圆环同步 Lv.{0} 解锁空间闪避：满血受伤时自动闪避，冷却 {1} 秒
+			TooltipSpatialDodgeReady: 空间闪避：已就绪，满血受伤时自动触发
+			TooltipSpatialDodgeCooldown: 空间闪避：冷却 {0} 秒
 			Summon: 胡帕出现了。圆环同步 Lv.{0}/{1}，经验 {2}/{3}
 			SummonAtCap: 胡帕出现了。圆环同步 Lv.{0}/{1}，需要圆环核心突破
 			ExperienceCombatText: +{0} 同步
 			LevelUp: 胡帕的圆环同步提升到 Lv.{0}！
 			LevelCapReached: 胡帕的圆环同步达到 Lv.{0}，需要圆环核心突破。
 			LevelCapReminder: 胡帕已经到达当前同步上限，需要圆环核心突破。
+			BossWitnessed: 胡帕见证了 {0} 被击败，圆环同步获得 {1} 经验。
+			BondLevelUp: 胡帕与你的羁绊提升至 {0}！
+			SpatialDodge: 空间闪避！
+			DebugGrant: 调试：胡帕获得 {0} 圆环同步经验。
+			DebugStatus: 调试：圆环同步 Lv.{0}/{1}，经验 {2}/{3}，羁绊 {4}/{5}
+			DebugStatusAtCap: 调试：圆环同步 Lv.{0}/{1}，已达当前上限，羁绊 {4}/{5}
+			DebugSpatialDodgeLocked: 调试：空间闪避 Lv.{0} 解锁，冷却 {1} 秒
+			DebugSpatialDodgeReady: 调试：空间闪避已就绪
+			DebugSpatialDodgeCooldown: 调试：空间闪避冷却 {0} 秒
+			RingCoreBreakthrough: 胡帕的圆环稳定了一些。同步上限提升到 Lv.{0}！
+			RingCoreNeedsLevel: 胡帕需要先达到圆环同步 Lv.{0} 才能吸收这个核心。
+			RingCoreAlreadyUsed: 这个阶段的圆环核心已经稳定过了。
+			RingCoreWrongStage: 这个圆环核心还无法与胡帕当前的同步阶段共鸣。
 		}
 
 		Projectiles: {

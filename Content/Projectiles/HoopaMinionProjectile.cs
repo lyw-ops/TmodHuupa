@@ -17,6 +17,9 @@ public class HoopaMinionProjectile : ModProjectile
 	private const float AttackRange = 520f;
 	private const float RingBoltSpeed = 8f;
 	private const int AttackCooldownTicks = 72;
+	private const int RingPickupUnlockLevel = 10;
+	private const float RingPickupRange = 360f;
+	private const float RingPickupSpeed = 9f;
 
 	public override void SetStaticDefaults()
 	{
@@ -82,6 +85,7 @@ public class HoopaMinionProjectile : ModProjectile
 		Projectile.spriteDirection = Projectile.Center.X < owner.Center.X ? 1 : -1;
 		Animate();
 		TryUseSmallRingSkill(owner);
+		TryUseRingPickupSkill(owner);
 		Projectile.rotation = MathHelper.Lerp(Projectile.rotation, Projectile.velocity.X * 0.015f, 0.08f);
 		Lighting.AddLight(Projectile.Center, 0.45f, 0.25f, 0.75f);
 	}
@@ -136,6 +140,44 @@ public class HoopaMinionProjectile : ModProjectile
 		SoundEngine.PlaySound(SoundID.Item8 with { Volume = 0.35f, Pitch = 0.25f }, Projectile.Center);
 		Projectile.ai[0] = AttackCooldownTicks;
 		Projectile.netUpdate = true;
+	}
+
+	private void TryUseRingPickupSkill(Player owner)
+	{
+		if (Projectile.owner != Main.myPlayer) {
+			return;
+		}
+
+		HoopaPlayer hoopaPlayer = owner.GetModPlayer<HoopaPlayer>();
+		if (hoopaPlayer.RingSyncLevel < RingPickupUnlockLevel) {
+			return;
+		}
+
+		float rangeSquared = RingPickupRange * RingPickupRange;
+		for (int i = 0; i < Main.maxItems; i++) {
+			Item item = Main.item[i];
+			if (!CanPullItem(item, owner, rangeSquared)) {
+				continue;
+			}
+
+			Vector2 toOwner = owner.Center - item.Center;
+			Vector2 desiredVelocity = toOwner.SafeNormalize(Vector2.Zero) * RingPickupSpeed;
+			item.velocity = Vector2.Lerp(item.velocity, desiredVelocity, 0.18f);
+			item.noGrabDelay = 0;
+		}
+	}
+
+	private bool CanPullItem(Item item, Player owner, float rangeSquared)
+	{
+		if (!item.active || item.IsAir || item.beingGrabbed) {
+			return false;
+		}
+
+		if (item.playerIndexTheItemIsReservedFor != 400 && item.playerIndexTheItemIsReservedFor != owner.whoAmI) {
+			return false;
+		}
+
+		return Vector2.DistanceSquared(item.Center, Projectile.Center) <= rangeSquared;
 	}
 
 	private NPC FindTarget()

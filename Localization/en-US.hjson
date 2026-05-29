@@ -7,6 +7,98 @@ Mods: {
 					'''
 					Summons Hoopa to follow you
 					Hoopa fires small ring bolts at nearby enemies
+					At Ring Sync Lv.10, Hoopa pulls nearby dropped items
+					'''
+			}
+
+			RoughRingCore: {
+				DisplayName: Rough Ring Core
+				Tooltip:
+					'''
+					A basic core used to stabilize Hoopa's fractured ring
+					Use at Hoopa Ring Sync Lv.10 to raise the cap to Lv.20
+					'''
+			}
+
+			GleamingRingCore: {
+				DisplayName: Gleaming Ring Core
+				Tooltip:
+					'''
+					Stabilizes Hoopa's ring with precious metals and gems
+					Use at Hoopa Ring Sync Lv.20 to raise the cap to Lv.30
+					'''
+			}
+
+			AlteredRingCore: {
+				DisplayName: Altered Ring Core
+				Tooltip:
+					'''
+					A ring core infused with corruption or crimson energy
+					Use at Hoopa Ring Sync Lv.30 to raise the cap to Lv.40
+					'''
+			}
+
+			MoltenRingCore: {
+				DisplayName: Molten Ring Core
+				Tooltip:
+					'''
+					Helps Hoopa's ring withstand infernal heat
+					Use at Hoopa Ring Sync Lv.40 to raise the cap to Lv.50
+					'''
+			}
+
+			HardenedRingCore: {
+				DisplayName: Hardened Ring Core
+				Tooltip:
+					'''
+					Anchors Hoopa's ring to hardmode world rules
+					Use at Hoopa Ring Sync Lv.50 to raise the cap to Lv.60
+					'''
+			}
+
+			ArcaneRingCore: {
+				DisplayName: Arcane Ring Core
+				Tooltip:
+					'''
+					A ring core fused with the souls of the mechanical bosses
+					Use at Hoopa Ring Sync Lv.60 to raise the cap to Lv.70
+					'''
+			}
+
+			TitanRingCore: {
+				DisplayName: Titan Ring Core
+				Tooltip:
+					'''
+					Strengthens the ring with hallowed metal
+					Use at Hoopa Ring Sync Lv.70 to raise the cap to Lv.80
+					'''
+			}
+
+			VerdantRingCore: {
+				DisplayName: Verdant Ring Core
+				Tooltip:
+					'''
+					Synchronizes the ring with life and temple energy
+					Use at Hoopa Ring Sync Lv.80 to raise the cap to Lv.90
+					'''
+			}
+
+			AstralRingCore: {
+				DisplayName: Astral Ring Core
+				Tooltip:
+					'''
+					The final core stabilized by cosmic power
+					Use at Hoopa Ring Sync Lv.90 to raise the cap to Lv.100
+					'''
+			}
+
+			HoopaDebugCompass: {
+				DisplayName: Hoopa Debug Compass
+				Tooltip:
+					'''
+					Development testing item
+					Left click: grant Hoopa 500 Ring Sync EXP
+					Right click: show Hoopa's current growth state
 					'''
 			}
 		}
@@ -21,12 +113,29 @@ Mods: {
 		HoopaExperience: {
 			Tooltip: Ring Sync Lv.{0}/{1}  EXP {2}/{3}
 			TooltipAtCap: Ring Sync Lv.{0}/{1}  Ring Core breakthrough required
+			TooltipBond: Bond Level {0}/{1}
+			TooltipSpatialDodgeLocked: Ring Sync Lv.{0} unlocks Spatial Dodge: auto-dodge a hit at full health, {1}s cooldown
+			TooltipSpatialDodgeReady: Spatial Dodge: ready, triggers automatically at full health
+			TooltipSpatialDodgeCooldown: Spatial Dodge: {0}s cooldown
 			Summon: Hoopa appeared. Ring Sync Lv.{0}/{1}, EXP {2}/{3}
 			SummonAtCap: Hoopa appeared. Ring Sync Lv.{0}/{1}, Ring Core breakthrough required
 			ExperienceCombatText: +{0} Sync
 			LevelUp: Hoopa's Ring Sync rose to Lv.{0}!
 			LevelCapReached: Hoopa's Ring Sync reached Lv.{0}. A Ring Core breakthrough is required.
 			LevelCapReminder: Hoopa is at the current Ring Sync cap. A Ring Core breakthrough is required.
+			BossWitnessed: Hoopa witnessed {0}'s defeat and gained {1} Ring Sync EXP.
+			BondLevelUp: Hoopa's bond with you rose to {0}!
+			SpatialDodge: Spatial Dodge!
+			DebugGrant: Debug: Hoopa gained {0} Ring Sync EXP.
+			DebugStatus: Debug: Ring Sync Lv.{0}/{1}, EXP {2}/{3}, Bond {4}/{5}
+			DebugStatusAtCap: Debug: Ring Sync Lv.{0}/{1}, currently capped, Bond {4}/{5}
+			DebugSpatialDodgeLocked: Debug: Spatial Dodge unlocks at Lv.{0}, {1}s cooldown
+			DebugSpatialDodgeReady: Debug: Spatial Dodge is ready
+			DebugSpatialDodgeCooldown: Debug: Spatial Dodge cooldown {0}s
+			RingCoreBreakthrough: Hoopa's ring stabilizes a little. Ring Sync cap raised to Lv.{0}!
+			RingCoreNeedsLevel: Hoopa must reach Ring Sync Lv.{0} before absorbing this core.
+			RingCoreAlreadyUsed: This stage of Hoopa's ring has already been stabilized.
+			RingCoreWrongStage: This Ring Core cannot resonate with Hoopa's current sync stage yet.
 		}
 
 		Projectiles: {

@@ -66,6 +66,11 @@ public class HoopaSummonStaff : ModItem
 				hoopaPlayer.ExperienceToNextRingSyncLevel);
 
 		tooltips.Add(new TooltipLine(Mod, "HoopaRingSync", progressText));
+		tooltips.Add(new TooltipLine(
+			Mod,
+			"HoopaBond",
+			Language.GetTextValue("Mods.TmodHuupa.HoopaExperience.TooltipBond", hoopaPlayer.BondLevel, HoopaPlayer.MaxBondLevel)));
+		tooltips.Add(new TooltipLine(Mod, "HoopaSpatialDodge", GetSpatialDodgeTooltip(hoopaPlayer)));
 	}
 
 	private static void ShowSummonMessage(Player player)
@@ -81,6 +86,24 @@ public class HoopaSummonStaff : ModItem
 				hoopaPlayer.ExperienceToNextRingSyncLevel);
 
 		Main.NewText(message, 255, 215, 80);
+	}
+
+	private static string GetSpatialDodgeTooltip(HoopaPlayer hoopaPlayer)
+	{
+		if (!hoopaPlayer.HasSpatialDodgeUnlocked) {
+			return Language.GetTextValue(
+				"Mods.TmodHuupa.HoopaExperience.TooltipSpatialDodgeLocked",
+				HoopaPlayer.SpatialDodgeUnlockLevel,
+				HoopaPlayer.SpatialDodgeCooldownSeconds);
+		}
+
+		if (hoopaPlayer.IsSpatialDodgeReady) {
+			return Language.GetTextValue("Mods.TmodHuupa.HoopaExperience.TooltipSpatialDodgeReady");
+		}
+
+		return Language.GetTextValue(
+			"Mods.TmodHuupa.HoopaExperience.TooltipSpatialDodgeCooldown",
+			hoopaPlayer.SpatialDodgeCooldownSecondsRemaining);
 	}
 
 	public override void AddRecipes()
