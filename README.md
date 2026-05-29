@@ -6,7 +6,13 @@ Early tModLoader mod prototype for a Hoopa-themed Terraria adventure.
 
 - `Hoopa Summon Staff`: craftable summon weapon.
 - Swing once to summon one Hoopa minion.
-- Hoopa currently follows the player only. Battle skills will be added later.
+- Hoopa currently follows the player and gains Ring Sync experience while summoned.
+- Hoopa fires a simple small ring bolt at nearby enemies.
+- Battle skills and breakthrough items will be added later.
+
+## Design Docs
+
+- [胡帕经验机制设计](docs/胡帕经验机制设计.md)
 
 ## Build Notes
 

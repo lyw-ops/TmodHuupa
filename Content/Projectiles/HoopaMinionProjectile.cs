@@ -1,9 +1,11 @@
 using System;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using TmodHuupa.Content.Buffs;
+using TmodHuupa.Content.Players;
 
 namespace TmodHuupa.Content.Projectiles;
 
@@ -12,6 +14,9 @@ public class HoopaMinionProjectile : ModProjectile
 	private const float IdleDistanceFromPlayer = 68f;
 	private const float IdleHeight = 62f;
 	private const int AnimationFrameTicks = 8;
+	private const float AttackRange = 520f;
+	private const float RingBoltSpeed = 8f;
+	private const int AttackCooldownTicks = 72;
 
 	public override void SetStaticDefaults()
 	{
@@ -76,6 +81,7 @@ public class HoopaMinionProjectile : ModProjectile
 
 		Projectile.spriteDirection = Projectile.Center.X < owner.Center.X ? 1 : -1;
 		Animate();
+		TryUseSmallRingSkill(owner);
 		Projectile.rotation = MathHelper.Lerp(Projectile.rotation, Projectile.velocity.X * 0.015f, 0.08f);
 		Lighting.AddLight(Projectile.Center, 0.45f, 0.25f, 0.75f);
 	}
@@ -92,5 +98,70 @@ public class HoopaMinionProjectile : ModProjectile
 		if (Projectile.frame >= Main.projFrames[Projectile.type]) {
 			Projectile.frame = 0;
 		}
+	}
+
+	private void TryUseSmallRingSkill(Player owner)
+	{
+		if (Projectile.owner != Main.myPlayer) {
+			return;
+		}
+
+		if (Projectile.ai[0] > 0f) {
+			Projectile.ai[0]--;
+			return;
+		}
+
+		NPC target = FindTarget();
+		if (target == null) {
+			return;
+		}
+
+		Vector2 direction = target.Center - Projectile.Center;
+		if (direction.LengthSquared() <= 0f) {
+			return;
+		}
+
+		HoopaPlayer hoopaPlayer = owner.GetModPlayer<HoopaPlayer>();
+		int damage = 6 + hoopaPlayer.RingSyncLevel / 2;
+		Vector2 velocity = direction.SafeNormalize(Vector2.UnitY) * RingBoltSpeed;
+		Projectile.NewProjectile(
+			Projectile.GetSource_FromAI(),
+			Projectile.Center,
+			velocity,
+			ModContent.ProjectileType<HoopaRingBoltProjectile>(),
+			damage,
+			1.2f,
+			owner.whoAmI);
+
+		SoundEngine.PlaySound(SoundID.Item8 with { Volume = 0.35f, Pitch = 0.25f }, Projectile.Center);
+		Projectile.ai[0] = AttackCooldownTicks;
+		Projectile.netUpdate = true;
+	}
+
+	private NPC FindTarget()
+	{
+		NPC closestTarget = null;
+		float closestDistanceSquared = AttackRange * AttackRange;
+
+		for (int i = 0; i < Main.maxNPCs; i++) {
+			NPC npc = Main.npc[i];
+			if (!npc.CanBeChasedBy(Projectile)) {
+				continue;
+			}
+
+			float distanceSquared = Vector2.DistanceSquared(Projectile.Center, npc.Center);
+			if (distanceSquared >= closestDistanceSquared) {
+				continue;
+			}
+
+			if (!Collision.CanHitLine(Projectile.position, Projectile.width, Projectile.height, npc.position, npc.width, npc.height)) {
+				continue;
+			}
+
+			closestTarget = npc;
+			closestDistanceSquared = distanceSquared;
+		}
+
+		return closestTarget;
 	}
 }

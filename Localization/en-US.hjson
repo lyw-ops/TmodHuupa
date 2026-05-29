@@ -6,7 +6,7 @@ Mods: {
 				Tooltip:
 					'''
 					Summons Hoopa to follow you
-					Hoopa's battle skills are not implemented yet
+					Hoopa fires small ring bolts at nearby enemies
 					'''
 			}
 		}
@@ -18,6 +18,18 @@ Mods: {
 			}
 		}
 
-		Projectiles.HoopaMinionProjectile.DisplayName: Hoopa
+		HoopaExperience: {
+			Tooltip: Ring Sync Lv.{0}/{1}  EXP {2}/{3}
+			TooltipAtCap: Ring Sync Lv.{0}/{1}  Ring Core breakthrough required
+			ExperienceCombatText: +{0} Sync
+			LevelUp: Hoopa's Ring Sync rose to Lv.{0}!
+			LevelCapReached: Hoopa's Ring Sync reached Lv.{0}. A Ring Core breakthrough is required.
+			LevelCapReminder: Hoopa is at the current Ring Sync cap. A Ring Core breakthrough is required.
+		}
+
+		Projectiles: {
+			HoopaMinionProjectile.DisplayName: Hoopa
+			HoopaRingBoltProjectile.DisplayName: Small Ring
+		}
 	}
 }

@@ -6,7 +6,7 @@ Mods: {
 				Tooltip:
 					'''
 					召唤胡帕跟随你
-					胡帕的战斗技能还没有实装
+					胡帕会发射小圆环能量弹攻击附近敌人
 					'''
 			}
 		}
@@ -18,6 +18,18 @@ Mods: {
 			}
 		}
 
-		Projectiles.HoopaMinionProjectile.DisplayName: 胡帕
+		HoopaExperience: {
+			Tooltip: 圆环同步 Lv.{0}/{1}  经验 {2}/{3}
+			TooltipAtCap: 圆环同步 Lv.{0}/{1}  需要圆环核心突破
+			ExperienceCombatText: +{0} 同步
+			LevelUp: 胡帕的圆环同步提升到 Lv.{0}！
+			LevelCapReached: 胡帕的圆环同步达到 Lv.{0}，需要圆环核心突破。
+			LevelCapReminder: 胡帕已经到达当前同步上限，需要圆环核心突破。
+		}
+
+		Projectiles: {
+			HoopaMinionProjectile.DisplayName: 胡帕
+			HoopaRingBoltProjectile.DisplayName: 小圆环
+		}
 	}
 }

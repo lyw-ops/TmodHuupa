@@ -1,9 +1,12 @@
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using TmodHuupa.Content.Buffs;
+using TmodHuupa.Content.Players;
 using TmodHuupa.Content.Projectiles;
 
 namespace TmodHuupa.Content.Items.Weapons;
@@ -47,6 +50,21 @@ public class HoopaSummonStaff : ModItem
 
 		Projectile.NewProjectile(source, Main.MouseWorld, Vector2.Zero, type, damage, knockback, player.whoAmI);
 		return false;
+	}
+
+	public override void ModifyTooltips(List<TooltipLine> tooltips)
+	{
+		HoopaPlayer hoopaPlayer = Main.LocalPlayer.GetModPlayer<HoopaPlayer>();
+		string progressText = hoopaPlayer.IsAtRingSyncCap
+			? Language.GetTextValue("Mods.TmodHuupa.HoopaExperience.TooltipAtCap", hoopaPlayer.RingSyncLevel, hoopaPlayer.RingSyncLevelCap)
+			: Language.GetTextValue(
+				"Mods.TmodHuupa.HoopaExperience.Tooltip",
+				hoopaPlayer.RingSyncLevel,
+				hoopaPlayer.RingSyncLevelCap,
+				hoopaPlayer.RingSyncExperience,
+				hoopaPlayer.ExperienceToNextRingSyncLevel);
+
+		tooltips.Add(new TooltipLine(Mod, "HoopaRingSync", progressText));
 	}
 
 	public override void AddRecipes()
