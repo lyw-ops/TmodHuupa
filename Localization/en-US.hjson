@@ -8,6 +8,8 @@ Mods: {
 					Summons Hoopa to follow you
 					Hoopa fires small ring bolts at nearby enemies
 					At Ring Sync Lv.10, Hoopa pulls nearby dropped items
+					At Ring Sync Lv.30, Hoopa opens Hyperspace Pull rings and uses elemental punches
+					At Ring Sync Lv.40, Hoopa grants Ring Shield during combat
 					'''
 			}
 
@@ -108,6 +110,21 @@ Mods: {
 				DisplayName: Hoopa
 				Description: Hoopa is watching the space around you
 			}
+
+			HoopaRingShieldBuff: {
+				DisplayName: Ring Shield
+				Description: Hoopa's ring is weakening incoming damage
+			}
+
+			HoopaFrostBindDebuff: {
+				DisplayName: Frost Bind
+				Description: Ice is restricting movement
+			}
+
+			HoopaParalysisDebuff: {
+				DisplayName: Paralysis
+				Description: Electricity is disrupting movement
+			}
 		}
 
 		HoopaExperience: {
@@ -141,6 +158,8 @@ Mods: {
 		Projectiles: {
 			HoopaMinionProjectile.DisplayName: Hoopa
 			HoopaRingBoltProjectile.DisplayName: Small Ring
+			HoopaRiftPullProjectile.DisplayName: Hyperspace Pull
+			HoopaElementalPunchProjectile.DisplayName: Elemental Punch
 		}
 	}
 }

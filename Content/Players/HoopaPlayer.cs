@@ -249,9 +249,10 @@ public class HoopaPlayer : ModPlayer
 		SoundEngine.PlaySound(SoundID.Item8 with { Volume = 0.6f, Pitch = 0.45f }, Player.Center);
 
 		for (int i = 0; i < 18; i++) {
-			Vector2 velocity = (MathHelper.TwoPi * i / 18f).ToRotationVector2() * 2.5f;
-			Dust dust = Dust.NewDustPerfect(Player.Center, DustID.GoldFlame, velocity, 120, new Color(255, 210, 70), 1.1f);
+			Vector2 velocity = (MathHelper.TwoPi * i / 18f).ToRotationVector2() * 1.2f;
+			Dust dust = Dust.NewDustPerfect(Player.Center, DustID.GoldFlame, velocity, 170, new Color(255, 210, 70), 0.65f);
 			dust.noGravity = true;
+			dust.noLight = true;
 		}
 	}
 

@@ -8,6 +8,8 @@ Mods: {
 					召唤胡帕跟随你
 					胡帕会发射小圆环能量弹攻击附近敌人
 					圆环同步 Lv.10 后，胡帕会牵引附近掉落物
+					圆环同步 Lv.30 后，胡帕会召出异界牵引圆环并使用属性拳
+					圆环同步 Lv.40 后，胡帕会在战斗中给予圆环护盾
 					'''
 			}
 
@@ -108,6 +110,21 @@ Mods: {
 				DisplayName: 胡帕
 				Description: 胡帕正在观察你周围的空间
 			}
+
+			HoopaRingShieldBuff: {
+				DisplayName: 圆环护盾
+				Description: 胡帕的圆环正在削弱受到的伤害
+			}
+
+			HoopaFrostBindDebuff: {
+				DisplayName: 冰结束缚
+				Description: 寒冰限制了行动
+			}
+
+			HoopaParalysisDebuff: {
+				DisplayName: 麻痹
+				Description: 电流正在干扰行动
+			}
 		}
 
 		HoopaExperience: {
@@ -141,6 +158,8 @@ Mods: {
 		Projectiles: {
 			HoopaMinionProjectile.DisplayName: 胡帕
 			HoopaRingBoltProjectile.DisplayName: 小圆环
+			HoopaRiftPullProjectile.DisplayName: 异界牵引
+			HoopaElementalPunchProjectile.DisplayName: 属性拳
 		}
 	}
 }

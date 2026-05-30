@@ -20,6 +20,21 @@ public class HoopaMinionProjectile : ModProjectile
 	private const int RingPickupUnlockLevel = 10;
 	private const float RingPickupRange = 360f;
 	private const float RingPickupSpeed = 9f;
+	private const int RiftPullUnlockLevel = 30;
+	private const int RiftPullCooldownTicks = 240;
+	private const int ElementalPunchUnlockLevel = 30;
+	private const int ElementalPunchCooldownTicks = 270;
+	private const int ElementalPunchTotalTicks = 32;
+	private const int ElementalPunchImpactTicks = 13;
+	private const int RingShieldUnlockLevel = 40;
+	private const int RingShieldCooldownTicks = 2700;
+	private const int RingShieldDurationTicks = 480;
+
+	private int elementalPunchCooldown;
+	private int elementalPunchTimer;
+	private int elementalPunchTargetIndex = -1;
+	private int elementalPunchType;
+	private bool elementalPunchHasHit;
 
 	public override void SetStaticDefaults()
 	{
@@ -64,6 +79,17 @@ public class HoopaMinionProjectile : ModProjectile
 			Projectile.timeLeft = 2;
 		}
 
+		if (elementalPunchCooldown > 0) {
+			elementalPunchCooldown--;
+		}
+
+		if (UpdateElementalPunch(owner)) {
+			Animate();
+			Projectile.rotation = MathHelper.Lerp(Projectile.rotation, Projectile.velocity.X * 0.018f, 0.12f);
+			Lighting.AddLight(Projectile.Center, 0.55f, 0.35f, 0.12f);
+			return;
+		}
+
 		Vector2 idlePosition = owner.Center + new Vector2(-owner.direction * IdleDistanceFromPlayer, -IdleHeight);
 		idlePosition.Y += MathF.Sin(Main.GlobalTimeWrappedHourly * 3.5f + Projectile.identity) * 8f;
 
@@ -86,6 +112,11 @@ public class HoopaMinionProjectile : ModProjectile
 		Animate();
 		TryUseSmallRingSkill(owner);
 		TryUseRingPickupSkill(owner);
+		bool startedElementalPunch = TryStartElementalPunchSkill(owner);
+		if (!startedElementalPunch) {
+			TryUseRiftPullSkill(owner);
+		}
+		TryUseRingShieldSkill(owner);
 		Projectile.rotation = MathHelper.Lerp(Projectile.rotation, Projectile.velocity.X * 0.015f, 0.08f);
 		Lighting.AddLight(Projectile.Center, 0.45f, 0.25f, 0.75f);
 	}
@@ -178,6 +209,197 @@ public class HoopaMinionProjectile : ModProjectile
 		}
 
 		return Vector2.DistanceSquared(item.Center, Projectile.Center) <= rangeSquared;
+	}
+
+	private void TryUseRiftPullSkill(Player owner)
+	{
+		if (Projectile.owner != Main.myPlayer) {
+			return;
+		}
+
+		if (Projectile.ai[1] > 0f) {
+			Projectile.ai[1]--;
+			return;
+		}
+
+		HoopaPlayer hoopaPlayer = owner.GetModPlayer<HoopaPlayer>();
+		if (hoopaPlayer.RingSyncLevel < RiftPullUnlockLevel) {
+			return;
+		}
+
+		NPC target = FindTarget();
+		if (target == null) {
+			return;
+		}
+
+		int damage = 5 + hoopaPlayer.RingSyncLevel / 5;
+		Projectile.NewProjectile(
+			Projectile.GetSource_FromAI(),
+			target.Center,
+			Vector2.Zero,
+			ModContent.ProjectileType<HoopaRiftPullProjectile>(),
+			damage,
+			0.3f,
+			owner.whoAmI);
+
+		Projectile.ai[1] = RiftPullCooldownTicks;
+		Projectile.netUpdate = true;
+	}
+
+	private bool TryStartElementalPunchSkill(Player owner)
+	{
+		if (Projectile.owner != Main.myPlayer || elementalPunchCooldown > 0 || elementalPunchTimer > 0) {
+			return false;
+		}
+
+		HoopaPlayer hoopaPlayer = owner.GetModPlayer<HoopaPlayer>();
+		if (hoopaPlayer.RingSyncLevel < ElementalPunchUnlockLevel) {
+			return false;
+		}
+
+		NPC target = FindTarget();
+		if (target == null) {
+			return false;
+		}
+
+		elementalPunchTargetIndex = target.whoAmI;
+		elementalPunchType = Main.rand.Next(3);
+		elementalPunchTimer = 1;
+		elementalPunchHasHit = false;
+		elementalPunchCooldown = ElementalPunchCooldownTicks;
+		SoundEngine.PlaySound(SoundID.Item8 with { Volume = 0.3f, Pitch = 0.55f }, Projectile.Center);
+		return true;
+	}
+
+	private bool UpdateElementalPunch(Player owner)
+	{
+		if (elementalPunchTimer <= 0) {
+			return false;
+		}
+
+		if (elementalPunchTargetIndex < 0 || elementalPunchTargetIndex >= Main.maxNPCs) {
+			EndElementalPunch();
+			return false;
+		}
+
+		NPC target = Main.npc[elementalPunchTargetIndex];
+		if (!target.CanBeChasedBy(Projectile) || !owner.active || owner.dead) {
+			EndElementalPunch();
+			return false;
+		}
+
+		elementalPunchTimer++;
+		Vector2 approachDirection = (Projectile.Center - target.Center).SafeNormalize(new Vector2(-owner.direction, 0f));
+		Vector2 punchPosition = target.Center + approachDirection * 42f;
+		Vector2 toPunchPosition = punchPosition - Projectile.Center;
+		Vector2 desiredVelocity = toPunchPosition.SafeNormalize(Vector2.Zero) * MathHelper.Clamp(toPunchPosition.Length() / 3f, 10f, 24f);
+		Projectile.velocity = Vector2.Lerp(Projectile.velocity, desiredVelocity, 0.34f);
+		Projectile.spriteDirection = Projectile.velocity.X >= 0f ? 1 : -1;
+
+		if (Main.netMode != NetmodeID.Server && elementalPunchTimer % 3 == 0) {
+			SpawnElementalPunchTrail();
+		}
+
+		if (!elementalPunchHasHit && (elementalPunchTimer >= ElementalPunchImpactTicks || Vector2.DistanceSquared(Projectile.Center, punchPosition) <= 28f * 28f)) {
+			PerformElementalPunch(owner, target);
+		}
+
+		if (elementalPunchTimer >= ElementalPunchTotalTicks) {
+			EndElementalPunch();
+		}
+
+		return true;
+	}
+
+	private void PerformElementalPunch(Player owner, NPC target)
+	{
+		HoopaPlayer hoopaPlayer = owner.GetModPlayer<HoopaPlayer>();
+		int damage = 14 + hoopaPlayer.RingSyncLevel / 3;
+		Projectile.NewProjectile(
+			Projectile.GetSource_FromAI(),
+			target.Center,
+			Vector2.Zero,
+			ModContent.ProjectileType<HoopaElementalPunchProjectile>(),
+			damage,
+			2f,
+			owner.whoAmI,
+			elementalPunchType);
+
+		Vector2 recoil = (Projectile.Center - target.Center).SafeNormalize(Vector2.UnitY);
+		Projectile.velocity = recoil * 8f;
+		elementalPunchHasHit = true;
+	}
+
+	private void EndElementalPunch()
+	{
+		elementalPunchTimer = 0;
+		elementalPunchTargetIndex = -1;
+		elementalPunchHasHit = false;
+	}
+
+	private void SpawnElementalPunchTrail()
+	{
+		Color color = elementalPunchType switch {
+			HoopaElementalPunchProjectile.FirePunch => new Color(255, 95, 45),
+			HoopaElementalPunchProjectile.IcePunch => new Color(125, 225, 255),
+			HoopaElementalPunchProjectile.ThunderPunch => new Color(255, 230, 65),
+			_ => new Color(255, 215, 90)
+		};
+		int dustType = elementalPunchType switch {
+			HoopaElementalPunchProjectile.FirePunch => DustID.Torch,
+			HoopaElementalPunchProjectile.IcePunch => DustID.Snow,
+			HoopaElementalPunchProjectile.ThunderPunch => DustID.GoldFlame,
+			_ => DustID.GoldFlame
+		};
+
+		Dust dust = Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(10f, 10f), dustType, -Projectile.velocity * 0.04f, 170, color, 0.55f);
+		dust.noGravity = true;
+		dust.noLight = true;
+	}
+
+	private void TryUseRingShieldSkill(Player owner)
+	{
+		if (Projectile.owner != Main.myPlayer) {
+			return;
+		}
+
+		if (Projectile.localAI[0] > 0f) {
+			Projectile.localAI[0]--;
+			return;
+		}
+
+		HoopaPlayer hoopaPlayer = owner.GetModPlayer<HoopaPlayer>();
+		if (hoopaPlayer.RingSyncLevel < RingShieldUnlockLevel || owner.HasBuff(ModContent.BuffType<HoopaRingShieldBuff>())) {
+			return;
+		}
+
+		if (FindTarget() == null) {
+			return;
+		}
+
+		owner.AddBuff(ModContent.BuffType<HoopaRingShieldBuff>(), RingShieldDurationTicks);
+		SoundEngine.PlaySound(SoundID.Item4 with { Volume = 0.4f, Pitch = 0.35f }, owner.Center);
+		SpawnRingShieldDust(owner);
+		Projectile.localAI[0] = RingShieldCooldownTicks;
+	}
+
+	private void SpawnRingShieldDust(Player owner)
+	{
+		if (Main.netMode == NetmodeID.Server) {
+			return;
+		}
+
+		for (int i = 0; i < 24; i++) {
+			Vector2 direction = (MathHelper.TwoPi * i / 24f).ToRotationVector2();
+			Vector2 position = owner.Center + direction * 42f;
+			Vector2 velocity = direction.RotatedBy(MathHelper.PiOver2) * 0.45f;
+			bool goldDust = i % 2 == 0;
+			int dustType = goldDust ? DustID.GoldFlame : DustID.Snow;
+			Color color = goldDust ? new Color(255, 215, 90) : new Color(145, 225, 255);
+			Dust dust = Dust.NewDustPerfect(position, dustType, velocity, 170, color, 0.58f);
+			dust.noGravity = true;
+			dust.noLight = true;
+		}
 	}
 
 	private NPC FindTarget()

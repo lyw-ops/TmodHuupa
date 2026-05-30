@@ -21,6 +21,9 @@ The story premise is that Hoopa crosses space-time into Terraria, discovers the 
 - `Hoopa Debug Compass` is available as a temporary development helper.
 - At Ring Sync `Lv.10`, Hoopa unlocks `Ring Pickup`, pulling nearby dropped items toward the player.
 - At Ring Sync `Lv.20`, Hoopa unlocks `Spatial Dodge`: while summoned, a full-health player automatically dodges one hit, then the skill enters a `90s` cooldown.
+- At Ring Sync `Lv.30`, Hoopa unlocks `Hyperspace Pull`: a short-lived ring field that lightly pulls enemies inward and deals small summon damage inside the ring.
+- At Ring Sync `Lv.30`, Hoopa also unlocks elemental punches: Fire Punch burns enemies, Ice Punch can bind them in frost, and Thunder Punch can paralyze them.
+- At Ring Sync `Lv.40`, Hoopa unlocks `Ring Shield`: during combat, Hoopa periodically grants the player a short damage-reduction buff.
 
 ## Ring Sync Prototype
 
@@ -87,6 +90,12 @@ To test `Ring Pickup`, use the debug compass to reach Ring Sync `Lv.10`, summon 
 
 To test `Spatial Dodge`, use the debug compass and the `Rough Ring Core` to reach Ring Sync `Lv.20`, summon Hoopa, heal to full health, then take one dodgeable hit. The staff tooltip or debug compass will show the remaining cooldown.
 
+To test `Hyperspace Pull`, use the debug compass and Ring Cores to reach Ring Sync `Lv.30`, summon Hoopa, then stand near a group of enemies. Hoopa should periodically open a light-blue ring around a target, lightly pulling enemies inside it and dealing small repeated damage.
+
+To test elemental punches, stay at Ring Sync `Lv.30` or higher and fight near enemies. Hoopa should occasionally dash toward a target and create a red, blue, or yellow punch burst.
+
+To test `Ring Shield`, use the debug compass and Ring Cores to reach Ring Sync `Lv.40`, summon Hoopa, then fight near enemies. Hoopa should periodically grant a short `Ring Shield` buff with gold-blue particles around the player.
+
 ## Content Overview
 
 - `Content/Items/Weapons/HoopaSummonStaff.cs`
@@ -97,6 +106,14 @@ To test `Spatial Dodge`, use the debug compass and the `Rough Ring Core` to reac
   - Follow behavior, basic attack loop, and Ring Pickup.
 - `Content/Projectiles/HoopaRingBoltProjectile.cs`
   - Small low-level projectile skill.
+- `Content/Projectiles/HoopaRiftPullProjectile.cs`
+  - Lv.30 pull field with light area damage.
+- `Content/Projectiles/HoopaElementalPunchProjectile.cs`
+  - Lv.30 elemental punch hit effects and status application.
+- `Content/Globals/HoopaElementalStatusGlobalNPC.cs`
+  - Lightweight frost bind and paralysis behavior.
+- `Content/Buffs/HoopaRingShieldBuff.cs`
+  - Lv.40 short damage-reduction buff.
 - `Content/Players/HoopaPlayer.cs`
   - Saves Ring Sync level, experience, level cap, Bond Level, and witnessed boss rewards.
   - Handles Spatial Dodge unlock and cooldown state.
@@ -115,6 +132,7 @@ To test `Spatial Dodge`, use the debug compass and the `Rough Ring Core` to reac
 ## Design Docs
 
 - [胡帕经验机制设计](docs/胡帕经验机制设计.md)
+- [开发记录：图片复用与待处理问题](docs/README.md)
 
 ## Roadmap
 
